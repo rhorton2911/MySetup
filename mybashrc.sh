@@ -102,13 +102,17 @@ elif [[ "$HOSTNAME" == *"gadi"* ]]; then
     alias scratch='cd ~/../../../scratch/d35/rh5686'
     alias soft='cd ~/../../../g/data/d35/rh5686'
     alias hcode='cd ~/../../../g/data/d35/rh5686/Triatomic'
-		alias mccc='cd /scratch/d35/rh5686/HeH+Code'
+		alias mccc='cd ~/../../../g/data/d35/rh5686/MCCC-FN-Triatomic'
+		alias heh='cd /scratch/d35/rh5686/HeH+Code'
+		alias workdir='cd /scratch/d35/rh5686/H3+WorkDir'
 
     #alias test='cp data.in ../TEST; cp input ../TEST; cp H3Plus ../TEST; cd ../TEST'
     alias debug='qsub -I -qexpress -lwalltime=01:00:00,ncpus=48,mem=190GB,jobfs=400GB,wd,storage=scratch/d35+gdata/d35 -P ${PROJECT}'
     alias debugiy='qsub -I -qexpress -lwalltime=01:00:00,ncpus=48,mem=190GB,jobfs=400GB,wd,storage=scratch/d35+gdata/d35 -P iy23'
 		alias account='nci_account'
 		
+		alias sc='qstat | cut -c1-8 | tail -n +3 | xargs qdel'
+
 		tm () {
 			 #Test MCCC code 'tm'
        cp /g/data/d35/rh5686/MCCC-FN-Triatomic/debug.gadi.intel/main  /g/data/d35/rh5686/TESTMCCC/
