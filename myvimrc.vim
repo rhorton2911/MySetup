@@ -23,7 +23,7 @@ endif
 call plug#begin()
 
 "Specify plugins to use
-Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+"Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'powerline/powerline'
 Plug 'powerline/fonts'
 "Airline provides a 'status bar to vim', requires powerline plugin and fonts loaded above
@@ -34,25 +34,16 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'jacoborus/tender.vim'
 "Allows access to git commands within a vim instance. Shows repository status within vim 
 "when coupled with the airline plugin
-Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-fugitive'
 "Introduces many useful features for editing .tex files in vim, e.g. command completion,
 "syntax highlighting, etc.
 Plug 'lervag/vimtex' 
 Plug 'xuhdev/vim-latex-live-preview'
-"Adds syntax highlighting for many different languages, most importantly
-"gnuplot
+"Adds syntax highlighting for many different languages, most importantly gnuplot
 Plug 'sheerun/vim-polyglot'
-
-"Plug 'Valloric/YouCompleteMe', { 'commit' : 'd98f896' }
 
 "Finalise and install plugins
 call plug#end()
-
-
-"Environment variables for YouCompleteMe installation
-"let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py'
-"let g:ycm_confirm_extra_conf=0
-"let g:ycm_python_binary_path='/usr/bin/python3'
 
 let g:airline_powerline_fonts=1
 "Need to call some airline functions to manually set a character in the powerline
@@ -140,8 +131,8 @@ vnoremap <right> <nop>
 function Plot()
   :w  
   :!gnuplot % 
- endfunction 
- map <Leader>p :<C-U>call Plot()<CR><CR>
+endfunction 
+map <Leader>p :<C-U>call Plot()<CR><CR>
 
 
 

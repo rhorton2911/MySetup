@@ -1,3 +1,4 @@
+###############################################################################
 # Sample .bashrc for SuSE Linux
 # Copyright (c) SuSE GmbH Nuernberg
 
@@ -14,16 +15,7 @@
 # editor. So uncomment the line below and enter the editor of your choice :-)
 export EDITOR=/usr/bin/vim
 #export EDITOR=/usr/bin/mcedit
-
-# For some news readers it makes sense to specify the NEWSSERVER variable here
-#export NEWSSERVER=your.news.server
-
-# If you want to use a Palm device with Linux, uncomment the two lines below.
-# For some (older) Palm Pilots, you might need to set a lower baud rate
-# e.g. 57600 or 38400; lowest is 9600 (very slow!)
-#
-#export PILOTPORT=/dev/pilot
-#export PILOTRATE=115200
+###############################################################################
 
 #Sets maximum size of core files that the user can create to zero. i.e. Prevent the user from creating core 
 #files. This prevents core-dump files from segfaults being created to save memory. 
@@ -31,6 +23,9 @@ ulimit -c 0
 
 HOSTNAME=$(hostname)
 echo "$HOSTNAME"
+
+alias vbrc='vim ~/MySetup/mybashrc.sh'
+alias vvrc='vim ~/MySetup/myvimrc.vim'
 
 #Cancel all currrently running jobs at once
 #alias printIt='echo "$(squeue -u rhorton | cut -c14-18 | tail -n +2 )"'
@@ -95,9 +90,12 @@ elif [[ "$HOSTNAME" == *"gadi"* ]]; then
 	  module load pbs
     module load intel-mkl/2023.0.0
 		#module load intel-mkl/2022.0.2
-    module load openmpi/4.1.4
     module load intel-compiler/2021.8.0
     #module load intel-compiler/2022.0.0
+
+		#Load modules for ARM FORGE debugger and profiler
+    module load openmpi/4.1.4
+		module load arm-forge/22.1.1
 
     alias scratch='cd ~/../../../scratch/d35/rh5686'
     alias soft='cd ~/../../../g/data/d35/rh5686'
@@ -107,30 +105,45 @@ elif [[ "$HOSTNAME" == *"gadi"* ]]; then
 		alias workdir='cd /scratch/d35/rh5686/H3+WorkDir'
 
     #alias test='cp data.in ../TEST; cp input ../TEST; cp H3Plus ../TEST; cd ../TEST'
-    alias debug='qsub -I -qexpress -lwalltime=01:00:00,ncpus=48,mem=190GB,jobfs=400GB,wd,storage=scratch/d35+gdata/d35 -P ${PROJECT}'
-    alias debugiy='qsub -I -qexpress -lwalltime=01:00:00,ncpus=48,mem=190GB,jobfs=400GB,wd,storage=scratch/d35+gdata/d35 -P iy23'
-		alias account='nci_account'
-		
-		alias sc='qstat | cut -c1-8 | tail -n +3 | xargs qdel'
+    alias debug='qsub -I -X -qexpress -lwalltime=01:00:00,ncpus=10,mem=190GB,jobfs=400GB,wd,storage=scratch/d35+gdata/d35 -P ${PROJECT}'
+    alias debugiy='qsub -I -X -qexpress -lwalltime=01:00:00,ncpus=10,mem=190GB,jobfs=400GB,wd,storage=scratch/d35+gdata/d35 -P iy23'
+    #alias debugiy='qsub -I -X -qexpress -lwalltime=01:00:00,ncpus=10,mem=190GB,jobfs=400GB,wd,storage=scratch/d35+gdata/d35 -P iy23'
+		alias account='nci_account'	
+		alias sc='qstat | cut -c1-9 | tail -n +3 | xargs qdel'
 
-		tm () {
-			 #Test MCCC code 'tm'
+		#Don't limit stack size
+		ulimit -s unlimited
+
+		td () {
+			 #Test MCCC debug code 'td'
        cp /g/data/d35/rh5686/MCCC-FN-Triatomic/debug.gadi.intel/main  /g/data/d35/rh5686/TESTMCCC/
 			 cd /g/data/d35/rh5686/TESTMCCC/
 		}
 
+		tb () {
+			 #Test MCCC debug code 'td'
+       cp /g/data/d35/rh5686/MCCC-FN-Triatomic/build.gadi.intel/main  /g/data/d35/rh5686/TESTMCCC/
+			 cd /g/data/d35/rh5686/TESTMCCC/
+		}
 
     ##-----------------------------------------------------
     ## synth-shell-prompt.sh
     if [ -f /home/573/rh5686/.config/synth-shell/synth-shell-prompt.sh ] && [ -n "$( echo $- | grep i )" ]; then
     	source /home/573/rh5686/.config/synth-shell/synth-shell-prompt.sh
     fi
-fi 
 
-#Set environment variables in case that bash script is being called from a debug node on gadi
-if [[ "$HOSTNAME" == *"gadi"* ]] && [[ "$HOSTNAME" == *"cpu"* ]]; then
-	 export OMP_NUM_THREADS=48
-	 export OMP_STACKSIZE=1000m
+    #Set environment variables in case that bash script is being called from a debug node on gadi
+    if [[ "$HOSTNAME" == *"cpu"* ]]; then
+    	 export OMP_NUM_THREADS=48
+    	 export OMP_STACKSIZE=1000m
+    fi
+
+elif [[ "$HOSTNAME" == *"frontera"* ]]; then
+	 module load git
+
+	 alias sq='squeue -u reeseh2911'
+   alias sc='squeue -u reeseh2911 | cut -c1-6 | tail -n +2 | xargs scancel'
+
 fi
 
 
